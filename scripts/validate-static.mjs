@@ -16,14 +16,14 @@ async function collect(directory) {
 }
 
 const htmlFiles = (await collect(root)).filter((file) => file.endsWith(".html"));
-if (htmlFiles.length !== 10) throw new Error(`Expected 10 HTML files including 404, found ${htmlFiles.length}`);
+if (htmlFiles.length !== 12) throw new Error(`Expected 12 HTML files including 404, found ${htmlFiles.length}`);
 
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
   if (/<script\b|modulepreload|codex-preview|Your site is taking shape/i.test(html)) {
     throw new Error(`Non-static or starter markup found in ${file}`);
   }
-  if (!/行路不难/.test(html) || !/\/manigarden\/assets\//.test(html)) {
+  if (!/麦尼海塘/.test(html) || !/\/manigarden\/assets\//.test(html)) {
     throw new Error(`Missing project content or prefixed assets in ${file}`);
   }
   const links = [...html.matchAll(/(?:href|src)="(\/manigarden\/[^"#?]*)/g)].map((match) => match[1]);
@@ -41,6 +41,16 @@ if (!/\/manigarden\/media\/video\/herd-home\.mp4/.test(homepage)) {
   throw new Error("Homepage is missing the prefixed documentary hero video");
 }
 await access(path.join(root, "field", "index.html"));
+await access(path.join(root, "stories", "cordyceps", "index.html"));
+await access(path.join(root, "stories", "qingming", "index.html"));
 await access(path.join(root, "media", "audio", "why-matsutake-excerpt.m4a"));
+await access(path.join(root, "media", "brand", "mani-garden-wordmark.png"));
+await access(path.join(root, "media", "reports", "life-is-wilderness.pdf"));
+await access(path.join(root, "media", "reports", "ideatopia-interview.pdf"));
+
+const library = await readFile(path.join(root, "library", "index.html"), "utf8");
+if (!/第三方报道/.test(library) || !/\/manigarden\/media\/reports\//.test(library)) {
+  throw new Error("Library is missing public third-party reports");
+}
 
 console.log(`Validated ${htmlFiles.length} static HTML files and all /manigarden/ links.`);
