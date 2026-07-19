@@ -16,7 +16,7 @@ async function collect(directory) {
 }
 
 const htmlFiles = (await collect(root)).filter((file) => file.endsWith(".html"));
-if (htmlFiles.length !== 12) throw new Error(`Expected 12 HTML files including 404, found ${htmlFiles.length}`);
+if (htmlFiles.length !== 14) throw new Error(`Expected 14 HTML files including 404, found ${htmlFiles.length}`);
 
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
@@ -43,14 +43,20 @@ if (!/\/manigarden\/media\/video\/herd-home\.mp4/.test(homepage)) {
 await access(path.join(root, "field", "index.html"));
 await access(path.join(root, "stories", "cordyceps", "index.html"));
 await access(path.join(root, "stories", "qingming", "index.html"));
+await access(path.join(root, "reports", "life-is-wilderness", "index.html"));
+await access(path.join(root, "reports", "ideatopia-interview", "index.html"));
 await access(path.join(root, "media", "audio", "why-matsutake-excerpt.m4a"));
 await access(path.join(root, "media", "brand", "mani-garden-wordmark.png"));
-await access(path.join(root, "media", "reports", "life-is-wilderness.pdf"));
-await access(path.join(root, "media", "reports", "ideatopia-interview.pdf"));
+for (const video of ["snow-road", "wildflower", "search-cordyceps", "snow-curtain", "calf-steps", "calf-portrait", "herd-home", "yak-portrait"]) {
+  await access(path.join(root, "media", "video", `${video}.mp4`));
+}
 
 const library = await readFile(path.join(root, "library", "index.html"), "utf8");
-if (!/第三方报道/.test(library) || !/\/manigarden\/media\/reports\//.test(library)) {
-  throw new Error("Library is missing public third-party reports");
+if (!/第三方报道/.test(library) || !/\/manigarden\/reports\/life-is-wilderness\//.test(library)) {
+  throw new Error("Library is missing designed third-party report pages");
+}
+if (/\.pdf|\/media\/reports\//i.test(library)) {
+  throw new Error("Library must not expose PDF files");
 }
 
 console.log(`Validated ${htmlFiles.length} static HTML files and all /manigarden/ links.`);

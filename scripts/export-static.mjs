@@ -24,6 +24,8 @@ const routes = [
   { path: "/stories/why-yak", directory: "stories/why-yak" },
   { path: "/stories/cordyceps", directory: "stories/cordyceps" },
   { path: "/stories/qingming", directory: "stories/qingming" },
+  { path: "/reports/life-is-wilderness", directory: "reports/life-is-wilderness" },
+  { path: "/reports/ideatopia-interview", directory: "reports/ideatopia-interview" },
 ];
 
 const workerUrl = pathToFileURL(path.join(sourceDist, "server/index.js"));
