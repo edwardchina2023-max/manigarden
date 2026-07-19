@@ -16,7 +16,7 @@ async function collect(directory) {
 }
 
 const htmlFiles = (await collect(root)).filter((file) => file.endsWith(".html"));
-if (htmlFiles.length !== 9) throw new Error(`Expected 9 HTML files including 404, found ${htmlFiles.length}`);
+if (htmlFiles.length !== 10) throw new Error(`Expected 10 HTML files including 404, found ${htmlFiles.length}`);
 
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
@@ -35,5 +35,12 @@ for (const file of htmlFiles) {
     await access(target).catch(() => { throw new Error(`Broken local link ${link} in ${file}`); });
   }
 }
+
+const homepage = await readFile(path.join(root, "index.html"), "utf8");
+if (!/\/manigarden\/media\/video\/herd-home\.mp4/.test(homepage)) {
+  throw new Error("Homepage is missing the prefixed documentary hero video");
+}
+await access(path.join(root, "field", "index.html"));
+await access(path.join(root, "media", "audio", "why-matsutake-excerpt.m4a"));
 
 console.log(`Validated ${htmlFiles.length} static HTML files and all /manigarden/ links.`);

@@ -15,6 +15,7 @@ if (!sourceDist || !process.argv[2]) {
 const routes = [
   { path: "/", directory: "" },
   { path: "/huang-hai", directory: "huang-hai" },
+  { path: "/field", directory: "field" },
   { path: "/library", directory: "library" },
   { path: "/topics", directory: "topics" },
   { path: "/evidence", directory: "evidence" },
@@ -38,7 +39,10 @@ function makeStatic(html, routePath) {
     .replaceAll('href="/assets/', `href="${publicBase}/assets/`)
     .replaceAll('src="/assets/', `src="${publicBase}/assets/`)
     .replaceAll('href="/og.png"', `href="${publicBase}/og.png"`)
-    .replaceAll('src="/og.png"', `src="${publicBase}/og.png"`);
+    .replaceAll('src="/og.png"', `src="${publicBase}/og.png"`)
+    .replaceAll('href="/media/', `href="${publicBase}/media/`)
+    .replaceAll('src="/media/', `src="${publicBase}/media/`)
+    .replaceAll('poster="/media/', `poster="${publicBase}/media/`);
 
   const linkedRoutes = routes.filter((item) => item.path !== "/").sort((a, b) => b.path.length - a.path.length);
   for (const linked of linkedRoutes) {
@@ -77,6 +81,7 @@ const rendered = [];
 for (const route of routes) rendered.push(await renderRoute(route));
 
 await cp(path.join(sourceDist, "client/assets"), path.join(outputRoot, "assets"), { recursive: true });
+await cp(path.join(sourceDist, "client/media"), path.join(outputRoot, "media"), { recursive: true });
 await cp(path.join(sourceDist, "client/og.png"), path.join(outputRoot, "og.png"));
 await writeFile(path.join(outputRoot, ".nojekyll"), "", "utf8");
 await writeFile(path.join(outputRoot, "404.html"), rendered[0], "utf8");
