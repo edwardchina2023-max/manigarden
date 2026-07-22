@@ -16,7 +16,7 @@ async function collect(directory) {
 }
 
 const htmlFiles = (await collect(root)).filter((file) => file.endsWith(".html"));
-if (htmlFiles.length !== 16) throw new Error(`Expected 16 HTML files including 404, found ${htmlFiles.length}`);
+if (htmlFiles.length !== 17) throw new Error(`Expected 17 HTML files including 404, found ${htmlFiles.length}`);
 
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
@@ -43,6 +43,7 @@ if (!/\/manigarden\/media\/video\/herd-home\.mp4/.test(homepage)) {
 await access(path.join(root, "field", "index.html"));
 await access(path.join(root, "diary", "index.html"));
 await access(path.join(root, "archive", "index.html"));
+await access(path.join(root, "series", "index.html"));
 await access(path.join(root, "stories", "cordyceps", "index.html"));
 await access(path.join(root, "stories", "qingming", "index.html"));
 await access(path.join(root, "reports", "life-is-wilderness", "index.html"));

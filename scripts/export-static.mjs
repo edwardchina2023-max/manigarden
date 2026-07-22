@@ -17,6 +17,7 @@ const routes = [
   { path: "/huang-hai", directory: "huang-hai" },
   { path: "/diary", directory: "diary" },
   { path: "/archive", directory: "archive" },
+  { path: "/series", directory: "series" },
   { path: "/field", directory: "field" },
   { path: "/library", directory: "library" },
   { path: "/topics", directory: "topics" },
