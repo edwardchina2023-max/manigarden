@@ -15,6 +15,8 @@ if (!sourceDist || !process.argv[2]) {
 const routes = [
   { path: "/", directory: "" },
   { path: "/huang-hai", directory: "huang-hai" },
+  { path: "/diary", directory: "diary" },
+  { path: "/archive", directory: "archive" },
   { path: "/field", directory: "field" },
   { path: "/library", directory: "library" },
   { path: "/topics", directory: "topics" },

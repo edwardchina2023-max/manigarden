@@ -16,7 +16,7 @@ async function collect(directory) {
 }
 
 const htmlFiles = (await collect(root)).filter((file) => file.endsWith(".html"));
-if (htmlFiles.length !== 14) throw new Error(`Expected 14 HTML files including 404, found ${htmlFiles.length}`);
+if (htmlFiles.length !== 16) throw new Error(`Expected 16 HTML files including 404, found ${htmlFiles.length}`);
 
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
@@ -41,14 +41,21 @@ if (!/\/manigarden\/media\/video\/herd-home\.mp4/.test(homepage)) {
   throw new Error("Homepage is missing the prefixed documentary hero video");
 }
 await access(path.join(root, "field", "index.html"));
+await access(path.join(root, "diary", "index.html"));
+await access(path.join(root, "archive", "index.html"));
 await access(path.join(root, "stories", "cordyceps", "index.html"));
 await access(path.join(root, "stories", "qingming", "index.html"));
 await access(path.join(root, "reports", "life-is-wilderness", "index.html"));
 await access(path.join(root, "reports", "ideatopia-interview", "index.html"));
 await access(path.join(root, "media", "audio", "why-matsutake-excerpt.m4a"));
 await access(path.join(root, "media", "brand", "mani-garden-wordmark.png"));
-for (const video of ["snow-road", "wildflower", "search-cordyceps", "snow-curtain", "calf-steps", "calf-portrait", "herd-home", "yak-portrait"]) {
+for (const video of ["snow-road", "wildflower", "search-cordyceps", "calf-steps", "calf-portrait", "herd-home", "yak-portrait"]) {
   await access(path.join(root, "media", "video", `${video}.mp4`));
+}
+await access(path.join(root, "media", "archive", "video", "snow-pasture.mp4"));
+
+if (!/\/manigarden\/media\/archive\/video\/snow-pasture\.mp4/.test(homepage)) {
+  throw new Error("Homepage is missing the featured Snowy Pasture film");
 }
 
 const library = await readFile(path.join(root, "library", "index.html"), "utf8");
