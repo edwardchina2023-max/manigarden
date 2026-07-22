@@ -55,8 +55,9 @@ for (const video of ["snow-road", "wildflower", "search-cordyceps", "calf-steps"
 }
 await access(path.join(root, "media", "archive", "video", "snow-pasture.mp4"));
 
-if (!/\/manigarden\/media\/archive\/video\/snow-pasture\.mp4/.test(homepage)) {
-  throw new Error("Homepage is missing the featured Snowy Pasture film");
+const diary = await readFile(path.join(root, "diary", "index.html"), "utf8");
+if (!/\/manigarden\/media\/archive\/video\/snow-pasture\.mp4/.test(diary) || !/2023年12月14日/.test(diary)) {
+  throw new Error("Highland Diary is missing the dated Snowy Pasture record");
 }
 
 const library = await readFile(path.join(root, "library", "index.html"), "utf8");
